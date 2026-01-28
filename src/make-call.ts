@@ -61,13 +61,13 @@ async function main() {
     }
     
     console.log("\n🔄 Initializing Call Automation client...");
-    const client = new CallAutomationClient(connectionString);
+    const client = new CallAutomationClient(connectionString!);
 
     console.log(`📞 Placing call from ${fromPhoneNumber} to ${toPhoneNumber}...`);
     
     const callInvite: CallInvite = {
-      targetParticipant: { phoneNumber: toPhoneNumber },
-      sourceCallIdNumber: { phoneNumber: fromPhoneNumber }
+      targetParticipant: { phoneNumber: toPhoneNumber! },
+      sourceCallIdNumber: { phoneNumber: fromPhoneNumber! }
     };
 
     // Create the call
