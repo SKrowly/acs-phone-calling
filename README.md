@@ -22,9 +22,23 @@ This project demonstrates how to make phone calls using Azure Communication Serv
    npm install
    ```
 
-2. Phone numbers are already configured in the code:
-   - From: `+18774439094` (your ACS number)
-   - To: `+15022990641` (destination)
+2. **Create a `.env` file** from the example template:
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Configure your `.env` file** with your Azure credentials:
+   ```env
+   ACS_CONNECTION_STRING=endpoint=https://your-acs-resource.communication.azure.com/;accesskey=your_access_key
+   TO_PHONE_NUMBER=+1234567890
+   FROM_PHONE_NUMBER=+1987654321
+   CALLBACK_URI=https://your-webhook-url.com/api/callbacks
+   ```
+   
+   - `ACS_CONNECTION_STRING`: Get this from Azure Portal → Communication Services → Keys
+   - `FROM_PHONE_NUMBER`: Your ACS phone number (must be purchased through Azure)
+   - `TO_PHONE_NUMBER`: Destination phone number (E.164 format)
+   - `CALLBACK_URI`: Your public webhook URL (will be generated in Step 1)
 
 ## How to Make a Call
 
@@ -47,7 +61,10 @@ You'll see output like:
 🔗 Callback URL: https://abc123.ngrok.io/api/callbacks
 ```
 
-**Copy the callback URL!**
+**Copy the callback URL** and update your `.env` file:
+```env
+CALLBACK_URI=https://abc123.ngrok.io/api/callbacks
+```
 
 ### Step 2: Make the Call
 
@@ -57,9 +74,7 @@ In a **second terminal**, run:
 npm run call
 ```
 
-When prompted:
-1. Paste the callback URL from the webhook server
-2. Confirm to proceed with the call
+This will read your configuration from `.env` and initiate the call using your callback URL.
 
 ### Step 3: Monitor Events
 
@@ -90,6 +105,11 @@ The webhook server handles these Azure Communication Services events:
 | `RecognizeCompleted` | DTMF/Speech recognition done |
 
 ## Troubleshooting
+
+**Missing Environment Variables**
+- Ensure `.env` file exists and contains all required variables
+- Never commit the `.env` file to git (it's in `.gitignore`)
+- Use `.env.example` as a template
 
 **Ngrok Authentication (Optional)**
 - Free ngrok works without auth but has limits
